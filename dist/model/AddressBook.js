@@ -5,12 +5,11 @@ class AddressBook {
     constructor() {
         this.contacts = [];
     }
-    addAccount(contact) {
+    addContact(contact) {
         this.contacts.push(contact);
     }
     getAllContacts() {
-        console.log(" Contact List:");
-        this.contacts.forEach((contact, i) => console.log(`${i + 1}. ${contact.toString()}`));
+        return this.contacts;
     }
 }
 exports.AddressBook = AddressBook;

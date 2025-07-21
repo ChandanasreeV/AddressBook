@@ -1,21 +1,13 @@
+import { ContactPerson } from './ContactPerson';
 
-import {ContactPerson} from "./ContactPerson"
-export class AddressBook{
+export class AddressBook {
+    private contacts: ContactPerson[] = [];
 
-    private contacts:ContactPerson[]=[]
-
-    addAccount(contact:ContactPerson):void
-    {
-        
-        this.contacts.push(contact)
-       
-        
+    addContact(contact: ContactPerson): void {
+        this.contacts.push(contact);
     }
-    
-    getAllContacts(): void {
-    console.log(" Contact List:");
-    this.contacts.forEach((contact, i) => console.log(`${i + 1}. ${contact.toString()}`));
-  }
-    
 
+    getAllContacts(): ContactPerson[] {
+        return this.contacts;
+    }
 }
