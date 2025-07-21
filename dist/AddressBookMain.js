@@ -33,36 +33,23 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-const readline = __importStar(require("readline-sync"));
-const ContactPerson_1 = require("./model/ContactPerson");
 const AddressBook_1 = require("./model/AddressBook");
+const readline = __importStar(require("readline-sync"));
 class AddressBookMain {
     constructor() {
         this.addressBook = new AddressBook_1.AddressBook();
     }
     welcomeToAddressBook() {
-        console.log("Welcome to the Address Book Program");
-    }
-    getContactFromUser() {
-        const firstName = readline.question("First name: ");
-        const lastName = readline.question("Last name: ");
-        const address = readline.question("Address: ");
-        const city = readline.question("City: ");
-        const state = readline.question("State: ");
-        const zipcode = parseInt(readline.question("Zipcode: "));
-        const phoneNumber = parseInt(readline.question("Phone Number: "));
-        const email = readline.question("Email: ");
-        return new ContactPerson_1.ContactPerson(firstName, lastName, address, city, state, zipcode, phoneNumber, email);
+        console.log("👋 Welcome to the Address Book Program");
     }
     run() {
         this.welcomeToAddressBook();
-        const personContact = this.getContactFromUser();
-        this.addressBook.addContact(personContact);
-        const contacts = this.addressBook.getAllContacts();
-        console.log("\nAll Contacts in Address Book:");
-        for (const contact of contacts) {
-            console.log(contact.toString());
-        }
+        const personContact = this.addressBook.getContactFromUser();
+        this.addressBook.addAccount(personContact);
+        this.addressBook.getAllContacts();
+        const nameToEdit = readline.question("Enter first name to edit :");
+        this.addressBook.editContact(nameToEdit, {});
+        this.addressBook.getAllContacts();
     }
 }
 const addressApp = new AddressBookMain();

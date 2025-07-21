@@ -1,16 +1,21 @@
-export class ContactPerson {
-    constructor(
-        public firstName: string,
-        public lastName: string,
-        public address: string,
-        public city: string,
-        public state: string,
-        public zipcode: number,
-        public phoneNumber: number,
-        public email: string
-    ) {}
+export class ContactPerson{
 
-    toString(): string {
-        return `Name: ${this.firstName} ${this.lastName}, Address: ${this.address}, ${this.city}, ${this.state} - ${this.zipcode}, Phone: ${this.phoneNumber}, Email: ${this.email}`;
-    }
+   constructor(
+    public firstName:string,
+    public lastName:string,
+    public address:string,
+    public city:string,
+    public state:string,
+    public zipcode:number,
+    public phoneNumber:number,
+    public email:string,
+   ){}
+
+   toString():string{
+
+          return `${this.firstName} ${this.lastName}, ${this.city}, ${this.state}, ${this.zipcode}, ${this.phoneNumber}, ${this.email}`;
+   }
+
+   
+
 }
