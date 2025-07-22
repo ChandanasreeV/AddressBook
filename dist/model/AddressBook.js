@@ -40,14 +40,21 @@ class AddressBook {
     constructor() {
         this.contacts = [];
     }
+    // UC1 & UC2 - Add contact
     addAccount(contact) {
         this.contacts.push(contact);
     }
+    // Show all contacts
     getAllContacts() {
-        console.log("📇 Contact List:");
-        this.contacts.forEach((contact, i) => console.log(`${i + 1}. ${contact.toString()}`));
+        console.log("\nContact List:");
+        if (this.contacts.length === 0) {
+            console.log("No contacts available.");
+        }
+        else {
+            this.contacts.forEach((contact, i) => console.log(`${i + 1}. ${contact.toString()}`));
+        }
     }
-    //*UC2-Add-New-Contact-->Adding contact by taking I/P from console
+    // UC2 - Get contact input from user
     getContactFromUser() {
         const firstName = readline.question("First name: ");
         const lastName = readline.question("Second name: ");
@@ -59,19 +66,18 @@ class AddressBook {
         const email = readline.question("Email: ");
         return new ContactPerson_1.ContactPerson(firstName, lastName, address, city, state, zipcode, phoneNumber, email);
     }
-    //*UC3-edit-contact-->Editing contact by first name
+    // UC3 - Edit contact by first name
     editContact(firstName, updateDetails) {
         const contact = this.contacts.find(c => c.firstName === firstName);
         if (contact) {
-            Object.assign(contact, updateDetails);
-            console.log("\nDo you want to edit this contact");
-            const choice = readline.question("Type 'yes' to edit ").toLowerCase();
+            console.log("\nDo you want to edit this contact?");
+            const choice = readline.question("Type 'yes' to edit: ").toLowerCase();
             if (choice === 'yes') {
                 const newLastName = readline.question("Second name: ");
                 const newAddress = readline.question("Address: ");
                 const newCity = readline.question("City: ");
                 const newState = readline.question("State: ");
-                const newiZpcode = parseInt(readline.question("Zipcode: "));
+                const newZipcode = parseInt(readline.question("Zipcode: "));
                 const newPhoneNumber = parseInt(readline.question("Phone Number: "));
                 const newEmail = readline.question("Email: ");
                 Object.assign(contact, {
@@ -79,16 +85,33 @@ class AddressBook {
                     address: newAddress,
                     city: newCity,
                     state: newState,
-                    zipcode: newiZpcode,
+                    zipcode: newZipcode,
                     phoneNumber: newPhoneNumber,
                     email: newEmail,
                 });
+                console.log("Contact updated successfully.");
+                return true;
             }
-            console.log("Contact updated succesfully");
+            else {
+                console.log("Edit cancelled.");
+                return false;
+            }
+        }
+        console.log("Contact not found.");
+        return false;
+    }
+    // UC4 - Delete contact by first name
+    deleteContactByName(firstName) {
+        const index = this.contacts.findIndex(c => c.firstName === firstName);
+        if (index !== -1) {
+            const deleted = this.contacts.splice(index, 1);
+            console.log(`\nContact '${deleted[0].firstName} ${deleted[0].lastName}' deleted successfully.`);
             return true;
         }
-        console.log("Contact not found");
-        return false;
+        else {
+            console.log("\nContact not found. Deletion failed.");
+            return false;
+        }
     }
 }
 exports.AddressBook = AddressBook;

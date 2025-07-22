@@ -13,7 +13,7 @@ class ContactPerson {
         this.email = email;
     }
     toString() {
-        return `${this.firstName} ${this.lastName}, ${this.city}, ${this.state}, ${this.zipcode}, ${this.phoneNumber}, ${this.email}`;
+        return `${this.firstName} ${this.lastName}, ${this.address}, ${this.city}, ${this.state}, ${this.zipcode}, ${this.phoneNumber}, ${this.email}`;
     }
 }
 exports.ContactPerson = ContactPerson;
