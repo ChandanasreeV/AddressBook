@@ -41,24 +41,24 @@ class AddressBookMain {
         this.addressBook = new AddressBook_1.AddressBook();
     }
     welcomeToAddressBook() {
-        console.log("👋 Welcome to the Address Book Program");
+        console.log("Welcome to the Address Book Program");
     }
-    // 🔁 DRY Helper method for prompting input with optional validation
+    // DRY Helper method for prompting input with optional validation
     promptInput(message, validator) {
         while (true) {
             const input = readline.question(message).trim();
             if (!input) {
-                console.log("❌ Input cannot be empty. Try again.");
+                console.log(" Input cannot be empty. Try again.");
                 continue;
             }
             if (validator && !validator(input)) {
-                console.log("❌ Invalid input format. Try again.");
+                console.log("Invalid input format. Try again.");
                 continue;
             }
             return input;
         }
     }
-    // 🧠 Method to get contact data from user
+    // Method to get contact data from user
     getContactFromUser() {
         const firstName = this.promptInput("First Name: ");
         const lastName = this.promptInput("Last Name: ");
@@ -72,16 +72,16 @@ class AddressBookMain {
     }
     run() {
         this.welcomeToAddressBook();
-        const personContact = this.getContactFromUser(); // ✅ Valid contact input
-        this.addressBook.addContact(personContact); // ✅ Add contact
-        this.addressBook.getAllContacts(); // ✅ Show all
+        const personContact = this.getContactFromUser(); //  Valid contact input
+        this.addressBook.addContact(personContact); //  Add contact
+        this.addressBook.getAllContacts(); //  Show all
         const nameToEdit = this.promptInput("Enter first name to edit: ");
-        this.addressBook.editContact(nameToEdit); // ✅ Edit contact
-        this.addressBook.getAllContacts(); // ✅ Show all after editing
+        this.addressBook.editContact(nameToEdit); //  Edit contact
+        this.addressBook.getAllContacts(); //  Show all after editing
         const nameToDelete = this.promptInput("Enter name to delete");
         this.addressBook.deleteContact(nameToDelete);
     }
 }
-// 🟢 Entry point
+//  Entry point
 const addressApp = new AddressBookMain();
 addressApp.run();

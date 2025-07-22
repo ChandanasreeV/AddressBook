@@ -41,25 +41,25 @@ class AddressBook {
     }
     addContact(contact) {
         this.contacts.push(contact);
-        console.log("✅ Contact added successfully.");
+        console.log(" Contact added successfully.");
     }
     getAllContacts() {
         if (this.contacts.length === 0) {
-            console.log("📭 No contacts available.");
+            console.log(" No contacts available.");
             return;
         }
-        console.log("📇 Contact List:");
+        console.log(" Contact List:");
         this.contacts.forEach((contact, i) => console.log(`${i + 1}. ${contact.toString()}`));
     }
     editContact(firstName) {
         const contact = this.contacts.find(c => c.firstName === firstName);
         if (!contact) {
-            console.log("❌ Contact not found.");
+            console.log(" Contact not found.");
             return false;
         }
         const confirm = this.prompt("Do you want to edit this contact? (yes/no): ").toLowerCase();
         if (confirm !== "yes") {
-            console.log("✋ Edit cancelled.");
+            console.log(" Edit cancelled.");
             return false;
         }
         try {
@@ -83,11 +83,11 @@ class AddressBook {
             contact.zipcode = updatedZip;
             contact.phoneNumber = phoneNumber;
             contact.email = email;
-            console.log("✅ Contact updated successfully.");
+            console.log(" Contact updated successfully.");
             return true;
         }
         catch (error) {
-            console.error("❌ Error updating contact:", error.message);
+            console.error(" Error updating contact:", error.message);
             return false;
         }
     }
@@ -95,12 +95,12 @@ class AddressBook {
         while (true) {
             const input = readline.question(promptText).trim();
             if (!input) {
-                console.log("❌ Input cannot be empty. Please try again.");
+                console.log(" Input cannot be empty. Please try again.");
                 continue;
             }
             if (isNumber) {
                 if (!/^\d+$/.test(input)) {
-                    console.log("❌ Invalid number. Please enter digits only.");
+                    console.log(" Invalid number. Please enter digits only.");
                     continue;
                 }
             }
@@ -110,16 +110,16 @@ class AddressBook {
     deleteContact(firstName) {
         const contactIndex = this.contacts.findIndex(c => c.firstName === firstName);
         if (contactIndex === -1) {
-            console.log("❌ Contact not found.");
+            console.log(" Contact not found.");
             return false;
         }
         const confirm = this.prompt("Are you sure you want to delete this contact? (yes/no): ").toLowerCase();
         if (confirm !== "yes") {
-            console.log("✋ Deletion cancelled.");
+            console.log(" Deletion cancelled.");
             return false;
         }
         this.contacts.splice(contactIndex, 1);
-        console.log("🗑️ Contact deleted successfully.");
+        console.log(" Contact deleted successfully.");
         return true;
     }
 }
