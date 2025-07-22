@@ -40,78 +40,107 @@ class AddressBook {
     constructor() {
         this.contacts = [];
     }
-    // UC1 & UC2 - Add contact
-    addAccount(contact) {
+    addContact(contact) {
         this.contacts.push(contact);
+        this.log("Contact added successfully.");
     }
-    // Show all contacts
     getAllContacts() {
-        console.log("\nContact List:");
         if (this.contacts.length === 0) {
-            console.log("No contacts available.");
+            this.log("No contacts available.");
+            return;
         }
-        else {
-            this.contacts.forEach((contact, i) => console.log(`${i + 1}. ${contact.toString()}`));
-        }
+        this.log("Contact List:");
+        this.contacts.forEach((contact, i) => console.log(`${i + 1}. ${contact.toString()}`));
     }
-    // UC2 - Get contact input from user
-    getContactFromUser() {
-        const firstName = readline.question("First name: ");
-        const lastName = readline.question("Second name: ");
-        const address = readline.question("Address: ");
-        const city = readline.question("City: ");
-        const state = readline.question("State: ");
-        const zipcode = parseInt(readline.question("Zipcode: "));
-        const phoneNumber = parseInt(readline.question("Phone Number: "));
-        const email = readline.question("Email: ");
-        return new ContactPerson_1.ContactPerson(firstName, lastName, address, city, state, zipcode, phoneNumber, email);
-    }
-    // UC3 - Edit contact by first name
-    editContact(firstName, updateDetails) {
+    //* UC4 - Edit Contact
+    editContact(firstName) {
         const contact = this.contacts.find(c => c.firstName === firstName);
-        if (contact) {
-            console.log("\nDo you want to edit this contact?");
-            const choice = readline.question("Type 'yes' to edit: ").toLowerCase();
-            if (choice === 'yes') {
-                const newLastName = readline.question("Second name: ");
-                const newAddress = readline.question("Address: ");
-                const newCity = readline.question("City: ");
-                const newState = readline.question("State: ");
-                const newZipcode = parseInt(readline.question("Zipcode: "));
-                const newPhoneNumber = parseInt(readline.question("Phone Number: "));
-                const newEmail = readline.question("Email: ");
-                Object.assign(contact, {
-                    lastName: newLastName,
-                    address: newAddress,
-                    city: newCity,
-                    state: newState,
-                    zipcode: newZipcode,
-                    phoneNumber: newPhoneNumber,
-                    email: newEmail,
-                });
-                console.log("Contact updated successfully.");
-                return true;
-            }
-            else {
-                console.log("Edit cancelled.");
-                return false;
-            }
-        }
-        console.log("Contact not found.");
-        return false;
-    }
-    // UC4 - Delete contact by first name
-    deleteContactByName(firstName) {
-        const index = this.contacts.findIndex(c => c.firstName === firstName);
-        if (index !== -1) {
-            const deleted = this.contacts.splice(index, 1);
-            console.log(`\nContact '${deleted[0].firstName} ${deleted[0].lastName}' deleted successfully.`);
+        if (!contact)
+            return this.log("Contact not found.", false);
+        const confirm = this.prompt("Do you want to edit this contact? (yes/no): ").toLowerCase();
+        if (confirm !== "yes")
+            return this.log("Edit cancelled.", false);
+        try {
+            const updated = this.getContactFromUser(contact);
+            contact.lastName = updated.lastName;
+            contact.address = updated.address;
+            contact.city = updated.city;
+            contact.state = updated.state;
+            contact.zipcode = updated.zipcode;
+            contact.phoneNumber = updated.phoneNumber;
+            contact.email = updated.email;
+            this.log(" Contact updated successfully.");
             return true;
         }
-        else {
-            console.log("\nContact not found. Deletion failed.");
+        catch (error) {
+            if (error instanceof Error) {
+                this.log(`Error updating contact: ${error.message}`, false);
+            }
+            else {
+                this.log("Unknown error occurred while updating contact.", false);
+            }
             return false;
         }
+    }
+    //* UC6 - Delete Contact
+    deleteContact(firstName) {
+        const index = this.contacts.findIndex(c => c.firstName === firstName);
+        if (index === -1)
+            return this.log("Contact not found.", false);
+        const confirm = this.prompt("Are you sure you want to delete this contact? (yes/no): ").toLowerCase();
+        if (confirm !== "yes")
+            return this.log(" Deletion cancelled.", false);
+        this.contacts.splice(index, 1);
+        this.log("Contact deleted successfully.");
+        return true;
+    }
+    //* UC5 - Add Multiple Contacts
+    addMultipleContact() {
+        do {
+            const contact = this.getContactFromUser();
+            this.addContact(contact);
+            const addMore = this.prompt("\nDo you want to add more contacts? (yes/no): ").toLowerCase();
+            if (addMore !== "yes")
+                break;
+        } while (true);
+    }
+    //* Helper for safe user input
+    prompt(promptText, isNumber = false) {
+        while (true) {
+            const input = readline.question(promptText).trim();
+            if (!input) {
+                this.log("Input cannot be empty. Please try again.", false);
+                continue;
+            }
+            if (isNumber && !/^\d+$/.test(input)) {
+                this.log("Invalid number. Please enter digits only.", false);
+                continue;
+            }
+            return input;
+        }
+    }
+    //* Helper method for uniform logging
+    log(message, success = true) {
+        console.log(message);
+        return success;
+    }
+    //* Get or update contact from user (used in UC1, UC4, UC5)
+    getContactFromUser(existingContact) {
+        var _a;
+        const firstName = (_a = existingContact === null || existingContact === void 0 ? void 0 : existingContact.firstName) !== null && _a !== void 0 ? _a : this.prompt("First Name: ");
+        const lastName = this.prompt("Last Name: ");
+        const address = this.prompt("Address: ");
+        const city = this.prompt("City: ");
+        const state = this.prompt("State: ");
+        const zipcode = parseInt(this.prompt("Zipcode: ", true));
+        const phoneNumber = this.prompt("Phone Number (with +91): ");
+        const email = this.prompt("Email: ");
+        // Validation using methods from ContactPerson
+        const contact = new ContactPerson_1.ContactPerson(firstName, lastName, address, city, state, zipcode, phoneNumber, email);
+        contact['validateZipcode'](zipcode);
+        contact['validatePhoneNumber'](phoneNumber);
+        contact['validateEmail'](email);
+        return contact;
     }
 }
 exports.AddressBook = AddressBook;
