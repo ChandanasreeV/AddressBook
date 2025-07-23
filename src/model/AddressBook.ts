@@ -62,8 +62,18 @@ export class AddressBook {
   addMultipleContacts(): void {
     do {
       try {
-        const contact = this.getContactFromUser();
-        this.addContact(contact);
+        const newContact = this.getContactFromUser();
+
+        const isDuplicate = this.contacts.some(existing =>
+          existing.isEqual(newContact)
+        );
+
+        if (isDuplicate) {
+          console.log(" Duplicate contact detected! This person already exists in the address book.");
+        } else {
+          this.contacts.push(newContact);
+          console.log(" Contact added successfully.");
+        }
       } catch (err) {
         console.log(" Failed to add contact:", err instanceof Error ? err.message : err);
       }
