@@ -33,7 +33,6 @@ var __importStar = (this && this.__importStar) || (function () {
     };
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
-const ContactPerson_1 = require("./model/ContactPerson");
 const AddressBook_1 = require("./model/AddressBook");
 const readline = __importStar(require("readline-sync"));
 class AddressBookMain {
@@ -43,45 +42,40 @@ class AddressBookMain {
     welcomeToAddressBook() {
         console.log("Welcome to the Address Book Program");
     }
-    // DRY Helper method for prompting input with optional validation
-    promptInput(message, validator) {
-        while (true) {
-            const input = readline.question(message).trim();
-            if (!input) {
-                console.log(" Input cannot be empty. Try again.");
-                continue;
-            }
-            if (validator && !validator(input)) {
-                console.log("Invalid input format. Try again.");
-                continue;
-            }
-            return input;
-        }
-    }
-    // Method to get contact data from user
-    getContactFromUser() {
-        const firstName = this.promptInput("First Name: ");
-        const lastName = this.promptInput("Last Name: ");
-        const address = this.promptInput("Address: ");
-        const city = this.promptInput("City: ");
-        const state = this.promptInput("State: ");
-        const zipcode = parseInt(this.promptInput("Zipcode (6 digits): ", input => /^\d{6}$/.test(input)));
-        const phoneNumber = this.promptInput("Phone Number (with +91): ", input => /^\+91[6-9]\d{9}$/.test(input));
-        const email = this.promptInput("Email: ", input => /^[\w.-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/.test(input));
-        return new ContactPerson_1.ContactPerson(firstName, lastName, address, city, state, zipcode, phoneNumber, email);
-    }
     run() {
         this.welcomeToAddressBook();
-        const personContact = this.getContactFromUser(); //  Valid contact input
-        this.addressBook.addContact(personContact); //  Add contact
-        this.addressBook.getAllContacts(); //  Show all
-        const nameToEdit = this.promptInput("Enter first name to edit: ");
-        this.addressBook.editContact(nameToEdit); //  Edit contact
-        this.addressBook.getAllContacts(); //  Show all after editing
-        const nameToDelete = this.promptInput("Enter name to delete");
-        this.addressBook.deleteContact(nameToDelete);
+        while (true) {
+            console.log("\n--- MENU ---");
+            console.log("1. Add Contact");
+            console.log("2. View Contacts");
+            console.log("3. Edit Contact by First Name");
+            console.log("4. Delete Contact by First Name");
+            console.log("5. Exit");
+            const choice = readline.question("Enter your choice (1-5): ");
+            switch (choice) {
+                case "1":
+                    const contact = this.addressBook.getContactFromUser();
+                    this.addressBook.addContact(contact);
+                    break;
+                case "2":
+                    this.addressBook.getAllContacts();
+                    break;
+                case "3":
+                    const nameToEdit = readline.question("Enter first name to edit: ");
+                    this.addressBook.editContact(nameToEdit);
+                    break;
+                case "4":
+                    const nameToDelete = readline.question("Enter first name to delete: ");
+                    this.addressBook.deleteContact(nameToDelete);
+                    break;
+                case "5":
+                    console.log("Exiting program. Goodbye!");
+                    return;
+                default:
+                    console.log("Invalid choice. Please select between 1 to 5.");
+            }
+        }
     }
 }
-//  Entry point
 const addressApp = new AddressBookMain();
 addressApp.run();
