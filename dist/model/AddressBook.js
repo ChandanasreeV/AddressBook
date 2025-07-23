@@ -42,7 +42,7 @@ class AddressBook {
     }
     addContact(contact) {
         this.contacts.push(contact);
-        console.log(" Contact added successfully.");
+        console.log("Contact added successfully.");
     }
     getAllContacts() {
         if (this.contacts.length === 0) {

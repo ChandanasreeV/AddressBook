@@ -6,7 +6,7 @@ export class AddressBook {
 
   addContact(contact: ContactPerson): void {
     this.contacts.push(contact);
-    console.log(" Contact added successfully.");
+    console.log("Contact added successfully.");
   }
 
   getAllContacts(): void {
