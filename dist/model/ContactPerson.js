@@ -33,6 +33,10 @@ class ContactPerson {
             throw new Error(" Invalid Email Format!");
         }
     }
+    isEqual(other) {
+        return (this.firstName.toLowerCase() === other.firstName.toLowerCase() &&
+            this.lastName.toLowerCase() === other.lastName.toLowerCase());
+    }
     toString() {
         return `${this.firstName} ${this.lastName}, ${this.address}, ${this.city}, ${this.state}, ${this.zipcode}, ${this.phoneNumber}, ${this.email}`;
     }

@@ -35,6 +35,13 @@ export class ContactPerson {
     }
   }
 
+  isEqual(other: ContactPerson): boolean {
+    return (
+      this.firstName.toLowerCase() === other.firstName.toLowerCase() &&
+      this.lastName.toLowerCase() === other.lastName.toLowerCase()
+    );
+  }
+
   toString(): string {
     return `${this.firstName} ${this.lastName}, ${this.address}, ${this.city}, ${this.state}, ${this.zipcode}, ${this.phoneNumber}, ${this.email}`;
   }

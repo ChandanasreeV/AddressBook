@@ -41,8 +41,13 @@ class AddressBook {
         this.contacts = [];
     }
     addContact(contact) {
+        const isDuplicate = this.contacts.some(existing => existing.isEqual(contact));
+        if (isDuplicate) {
+            console.log(" Duplicate contact! This person already exists in the address book.");
+            return;
+        }
         this.contacts.push(contact);
-        console.log("Contact added successfully.");
+        console.log(" Contact added successfully.");
     }
     getAllContacts() {
         if (this.contacts.length === 0) {
@@ -60,7 +65,7 @@ class AddressBook {
         }
         const confirm = readline.question("Do you want to edit this contact? (yes/no): ").toLowerCase();
         if (confirm !== "yes") {
-            console.log("Edit cancelled.");
+            console.log(" Edit cancelled.");
             return false;
         }
         try {
@@ -82,8 +87,13 @@ class AddressBook {
     }
     addMultipleContacts() {
         do {
-            const contact = this.getContactFromUser();
-            this.addContact(contact);
+            try {
+                const contact = this.getContactFromUser();
+                this.addContact(contact);
+            }
+            catch (err) {
+                console.log(" Failed to add contact:", err instanceof Error ? err.message : err);
+            }
             const more = readline.question("Add another contact? (yes/no): ").toLowerCase();
             if (more !== "yes")
                 break;
