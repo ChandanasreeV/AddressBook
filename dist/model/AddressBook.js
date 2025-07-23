@@ -42,23 +42,27 @@ class AddressBook {
     }
     addContact(contact) {
         this.contacts.push(contact);
-        this.log("Contact added successfully.");
+        console.log("✅ Contact added successfully.");
     }
     getAllContacts() {
         if (this.contacts.length === 0) {
-            this.log("No contacts available.");
+            console.log("ℹ️ No contacts available.");
             return;
         }
-        this.log("Contact List:");
+        console.log("\n📒 Contact List:");
         this.contacts.forEach((contact, i) => console.log(`${i + 1}. ${contact.toString()}`));
     }
     editContact(firstName) {
         const contact = this.contacts.find(c => c.firstName === firstName);
-        if (!contact)
-            return this.log("Contact not found.", false);
-        const confirm = this.prompt("Do you want to edit this contact? (yes/no): ").toLowerCase();
-        if (confirm !== "yes")
-            return this.log("Edit cancelled.", false);
+        if (!contact) {
+            console.log("❌ Contact not found.");
+            return false;
+        }
+        const confirm = readline.question("Do you want to edit this contact? (yes/no): ").toLowerCase();
+        if (confirm !== "yes") {
+            console.log("ℹ️ Edit cancelled.");
+            return false;
+        }
         try {
             const updated = this.getContactFromUser(contact);
             contact.lastName = updated.lastName;
@@ -68,61 +72,48 @@ class AddressBook {
             contact.zipcode = updated.zipcode;
             contact.phoneNumber = updated.phoneNumber;
             contact.email = updated.email;
-            this.log("Contact updated successfully.");
+            console.log("✅ Contact updated successfully.");
             return true;
         }
         catch (error) {
-            if (error instanceof Error) {
-                this.log(`Error updating contact: ${error.message}`, false);
-            }
-            else {
-                this.log("Unknown error occurred while updating contact.", false);
-            }
+            console.log("❌ Error updating contact:", error instanceof Error ? error.message : error);
             return false;
         }
     }
-    addMultipleContact() {
+    addMultipleContacts() {
         do {
             const contact = this.getContactFromUser();
             this.addContact(contact);
-            const addMore = this.prompt("Do you want to add more contacts? (yes/no): ").toLowerCase();
-            if (addMore !== "yes")
+            const more = readline.question("Add another contact? (yes/no): ").toLowerCase();
+            if (more !== "yes")
                 break;
         } while (true);
     }
-    prompt(promptText, isNumber = false) {
+    prompt(promptText, validator) {
         while (true) {
             const input = readline.question(promptText).trim();
             if (!input) {
-                this.log("Input cannot be empty. Please try again.", false);
+                console.log("⚠️ Input cannot be empty.");
                 continue;
             }
-            if (isNumber && !/^\d+$/.test(input)) {
-                this.log("Invalid number. Please enter digits only.", false);
+            if (validator && !validator(input)) {
+                console.log("⚠️ Invalid format. Please try again.");
                 continue;
             }
             return input;
         }
     }
-    log(message, success = true) {
-        console.log(message);
-        return success;
-    }
-    getContactFromUser(existingContact) {
+    getContactFromUser(existing) {
         var _a;
-        const firstName = (_a = existingContact === null || existingContact === void 0 ? void 0 : existingContact.firstName) !== null && _a !== void 0 ? _a : this.prompt("First Name: ");
+        const firstName = (_a = existing === null || existing === void 0 ? void 0 : existing.firstName) !== null && _a !== void 0 ? _a : this.prompt("First Name: ");
         const lastName = this.prompt("Last Name: ");
         const address = this.prompt("Address: ");
         const city = this.prompt("City: ");
         const state = this.prompt("State: ");
-        const zipcode = parseInt(this.prompt("Zipcode: ", true));
-        const phoneNumber = this.prompt("Phone Number (with +91): ");
-        const email = this.prompt("Email: ");
-        const contact = new ContactPerson_1.ContactPerson(firstName, lastName, address, city, state, zipcode, phoneNumber, email);
-        contact['validateZipcode'](zipcode);
-        contact['validatePhoneNumber'](phoneNumber);
-        contact['validateEmail'](email);
-        return contact;
+        const zipcode = parseInt(this.prompt("Zipcode (6 digits): ", input => /^[1-9][0-9]{5}$/.test(input)));
+        const phoneNumber = this.prompt("Phone Number (+91XXXXXXXXXX): ", input => /^\+91[6-9]\d{9}$/.test(input));
+        const email = this.prompt("Email: ", input => /^[\w.-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/.test(input));
+        return new ContactPerson_1.ContactPerson(firstName, lastName, address, city, state, zipcode, phoneNumber, email);
     }
 }
 exports.AddressBook = AddressBook;
