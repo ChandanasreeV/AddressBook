@@ -21,7 +21,10 @@ export class AddressBook {
     );
   }
 
+<<<<<<< HEAD
   //*  UC4 - Edit Contact
+=======
+>>>>>>> UC6_multiple-address-book
   editContact(firstName: string): boolean {
     const contact = this.contacts.find(c => c.firstName === firstName);
     if (!contact) return this.log(" Contact not found.", false);
@@ -40,7 +43,7 @@ export class AddressBook {
       contact.phoneNumber = updated.phoneNumber;
       contact.email = updated.email;
 
-      this.log(" Contact updated successfully.");
+      this.log("Contact updated successfully.");
       return true;
     } catch (error: unknown) {
       if (error instanceof Error) {
@@ -52,20 +55,26 @@ export class AddressBook {
     }
   }
 
+<<<<<<< HEAD
   
   
 
   //*  UC5 - Add Multiple Contacts
+=======
+>>>>>>> UC6_multiple-address-book
   addMultipleContact(): void {
     do {
       const contact = this.getContactFromUser();
       this.addContact(contact);
-      const addMore = this.prompt("\nDo you want to add more contacts? (yes/no): ").toLowerCase();
+      const addMore = this.prompt("Do you want to add more contacts? (yes/no): ").toLowerCase();
       if (addMore !== "yes") break;
     } while (true);
   }
 
+<<<<<<< HEAD
   //* 🔧 Helper for safe user input
+=======
+>>>>>>> UC6_multiple-address-book
   private prompt(promptText: string, isNumber: boolean = false): string {
     while (true) {
       const input = readline.question(promptText).trim();
@@ -83,13 +92,19 @@ export class AddressBook {
     }
   }
 
+<<<<<<< HEAD
   //*  Helper method for uniform logging
+=======
+>>>>>>> UC6_multiple-address-book
   private log(message: string, success: boolean = true): boolean {
     console.log(message);
     return success;
   }
 
+<<<<<<< HEAD
   //*  Get or update contact from user (used in UC1, UC4, UC5)
+=======
+>>>>>>> UC6_multiple-address-book
   getContactFromUser(existingContact?: ContactPerson): ContactPerson {
     const firstName = existingContact?.firstName ?? this.prompt("First Name: ");
     const lastName = this.prompt("Last Name: ");
@@ -100,7 +115,6 @@ export class AddressBook {
     const phoneNumber = this.prompt("Phone Number (with +91): ");
     const email = this.prompt("Email: ");
 
-    // Validation using methods from ContactPerson
     const contact = new ContactPerson(firstName, lastName, address, city, state, zipcode, phoneNumber, email);
     contact['validateZipcode'](zipcode);
     contact['validatePhoneNumber'](phoneNumber);
@@ -108,4 +122,8 @@ export class AddressBook {
 
     return contact;
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> UC6_multiple-address-book
