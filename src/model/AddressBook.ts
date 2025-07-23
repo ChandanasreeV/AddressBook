@@ -94,7 +94,7 @@ export class AddressBook {
 
     const contact = new ContactPerson(firstName, lastName, address, city, state, zipcode, phoneNumber, email);
     contact['validateZipcode'](zipcode);
-    contact['validatePhoneNumber'](phoneNumber);
+    //contact['validatePhoneNumber'](phoneNumber);
     contact['validateEmail'](email);
 
     return contact;
