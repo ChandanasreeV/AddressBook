@@ -132,5 +132,9 @@ class AddressBook {
         const email = this.prompt("Email: ", input => /^[\w.-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/.test(input));
         return new ContactPerson_1.ContactPerson(firstName, lastName, address, city, state, zipcode, phoneNumber, email);
     }
+    searchByCityOrState(keyword) {
+        return this.contacts.filter(c => c.city.toLowerCase() === keyword.toLowerCase() ||
+            c.state.toLowerCase() === keyword.toLowerCase());
+    }
 }
 exports.AddressBook = AddressBook;

@@ -10,7 +10,6 @@ export class AddressBook {
       console.log(" Duplicate contact! This person already exists in the address book.");
       return;
     }
-
     this.contacts.push(contact);
     console.log(" Contact added successfully.");
   }
@@ -20,7 +19,6 @@ export class AddressBook {
       console.log(" No contacts available.");
       return;
     }
-
     console.log("\n Contact List:");
     this.contacts.forEach((contact, i) =>
       console.log(`${i + 1}. ${contact.toString()}`)
@@ -42,7 +40,6 @@ export class AddressBook {
 
     try {
       const updated = this.getContactFromUser(contact);
-
       contact.lastName = updated.lastName;
       contact.address = updated.address;
       contact.city = updated.city;
@@ -63,7 +60,6 @@ export class AddressBook {
     do {
       try {
         const newContact = this.getContactFromUser();
-
         const isDuplicate = this.contacts.some(existing =>
           existing.isEqual(newContact)
         );
@@ -111,5 +107,12 @@ export class AddressBook {
     const email = this.prompt("Email: ", input => /^[\w.-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/.test(input));
 
     return new ContactPerson(firstName, lastName, address, city, state, zipcode, phoneNumber, email);
+  }
+
+  searchByCityOrState(keyword: string): ContactPerson[] {
+    return this.contacts.filter(c =>
+      c.city.toLowerCase() === keyword.toLowerCase() ||
+      c.state.toLowerCase() === keyword.toLowerCase()
+    );
   }
 }
