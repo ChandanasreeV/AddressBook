@@ -1,0 +1,41 @@
+# Node modules
+node_modules/
+
+# Output directories
+dist/
+build/
+
+# TypeScript cache
+*.tsbuildinfo
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# IDE/Editor specific
+.vscode/
+.idea/
+
+# Mac system files
+.DS_Store
+
+# Optional: coverage reports (for testing)
+coverage/
+
+# Optional: compiled JS files if you're not using `dist/`
+*.js
+*.js.map
+
+# Optional: package lock files (choose one depending on your package manager)
+# Uncomment the one you don’t use if you want to enforce a single lockfile
+# package-lock.json
+# yarn.lock
+# pnpm-lock.yaml
