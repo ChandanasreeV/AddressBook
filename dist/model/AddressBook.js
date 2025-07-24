@@ -47,94 +47,94 @@ class AddressBook {
             return;
         }
         this.contacts.push(contact);
-        console.log(" Contact added successfully.");
+        console.log("Contact added successfully.");
     }
     getAllContacts() {
         if (this.contacts.length === 0) {
-            console.log(" No contacts available.");
+            console.log("No contacts available.");
             return;
         }
-        console.log("\n Contact List:");
+        console.log("Contact List:");
         this.contacts.forEach((contact, i) => console.log(`${i + 1}. ${contact.toString()}`));
     }
-    editContact(firstName) {
-        const contact = this.contacts.find(c => c.firstName === firstName);
-        if (!contact) {
-            console.log(" Contact not found.");
-            return false;
-        }
-        const confirm = readline.question("Do you want to edit this contact? (yes/no): ").toLowerCase();
-        if (confirm !== "yes") {
-            console.log(" Edit cancelled.");
-            return false;
-        }
-        try {
-            const updated = this.getContactFromUser(contact);
-            contact.lastName = updated.lastName;
-            contact.address = updated.address;
-            contact.city = updated.city;
-            contact.state = updated.state;
-            contact.zipcode = updated.zipcode;
-            contact.phoneNumber = updated.phoneNumber;
-            contact.email = updated.email;
-            console.log(" Contact updated successfully.");
-            return true;
-        }
-        catch (error) {
-            console.log(" Error updating contact:", error instanceof Error ? error.message : error);
-            return false;
-        }
-    }
-    addMultipleContacts() {
-        do {
-            try {
-                const newContact = this.getContactFromUser();
-                const isDuplicate = this.contacts.some(existing => existing.isEqual(newContact));
-                if (isDuplicate) {
-                    console.log(" Duplicate contact detected! This person already exists in the address book.");
-                }
-                else {
-                    this.contacts.push(newContact);
-                    console.log(" Contact added successfully.");
-                }
-            }
-            catch (err) {
-                console.log(" Failed to add contact:", err instanceof Error ? err.message : err);
-            }
-            const more = readline.question("Add another contact? (yes/no): ").toLowerCase();
-            if (more !== "yes")
-                break;
-        } while (true);
-    }
-    prompt(promptText, validator) {
-        while (true) {
-            const input = readline.question(promptText).trim();
-            if (!input) {
-                console.log(" Input cannot be empty.");
-                continue;
-            }
-            if (validator && !validator(input)) {
-                console.log(" Invalid format. Please try again.");
-                continue;
-            }
-            return input;
-        }
-    }
-    getContactFromUser(existing) {
-        var _a;
-        const firstName = (_a = existing === null || existing === void 0 ? void 0 : existing.firstName) !== null && _a !== void 0 ? _a : this.prompt("First Name: ");
+    getContactFromUser() {
+        const firstName = this.prompt("First Name: ");
         const lastName = this.prompt("Last Name: ");
         const address = this.prompt("Address: ");
         const city = this.prompt("City: ");
         const state = this.prompt("State: ");
-        const zipcode = parseInt(this.prompt("Zipcode (6 digits): ", input => /^[1-9][0-9]{5}$/.test(input)));
-        const phoneNumber = this.prompt("Phone Number (+91XXXXXXXXXX): ", input => /^\+91[6-9]\d{9}$/.test(input));
-        const email = this.prompt("Email: ", input => /^[\w.-]+@[a-zA-Z\d.-]+\.[a-zA-Z]{2,}$/.test(input));
+        const zipcodeStr = this.prompt("Zipcode (6 digits): ", true);
+        const phoneNumber = this.prompt("Phone Number (+91XXXXXXXXXX): ");
+        const email = this.prompt("Email: ");
+        const zipcode = parseInt(zipcodeStr);
         return new ContactPerson_1.ContactPerson(firstName, lastName, address, city, state, zipcode, phoneNumber, email);
     }
-    searchByCityOrState(keyword) {
-        return this.contacts.filter(c => c.city.toLowerCase() === keyword.toLowerCase() ||
-            c.state.toLowerCase() === keyword.toLowerCase());
+    editContact(firstName) {
+        const contact = this.contacts.find(c => c.firstName === firstName);
+        if (!contact) {
+            console.log("Contact not found.");
+            return false;
+        }
+        const confirm = readline.question("Do you want to edit this contact? (yes/no): ").toLowerCase();
+        if (confirm !== "yes") {
+            console.log("Edit cancelled.");
+            return false;
+        }
+        try {
+            const lastName = this.prompt("Last Name: ");
+            const address = this.prompt("Address: ");
+            const city = this.prompt("City: ");
+            const state = this.prompt("State: ");
+            const zipcodeStr = this.prompt("Zipcode (6 digits): ", true);
+            const phoneNumber = this.prompt("Phone Number (+91XXXXXXXXXX): ");
+            const email = this.prompt("Email: ");
+            const updatedZip = parseInt(zipcodeStr);
+            contact.validateZipcode(updatedZip);
+            contact.validatePhoneNumber(phoneNumber);
+            contact.validateEmail(email);
+            contact.lastName = lastName;
+            contact.address = address;
+            contact.city = city;
+            contact.state = state;
+            contact.zipcode = updatedZip;
+            contact.phoneNumber = phoneNumber;
+            contact.email = email;
+            console.log("Contact updated successfully.");
+            return true;
+        }
+        catch (error) {
+            console.error("Error updating contact:", error.message);
+            return false;
+        }
+    }
+    deleteContact(firstName) {
+        const contactIndex = this.contacts.findIndex(c => c.firstName === firstName);
+        if (contactIndex === -1) {
+            console.log("Contact not found.");
+            return false;
+        }
+        const confirm = this.prompt("Are you sure you want to delete this contact? (yes/no): ").toLowerCase();
+        if (confirm !== "yes") {
+            console.log("Deletion cancelled.");
+            return false;
+        }
+        this.contacts.splice(contactIndex, 1);
+        console.log("Contact deleted successfully.");
+        return true;
+    }
+    prompt(promptText, isNumber = false) {
+        while (true) {
+            const input = readline.question(promptText).trim();
+            if (!input) {
+                console.log("Input cannot be empty. Please try again.");
+                continue;
+            }
+            if (isNumber && !/^\d+$/.test(input)) {
+                console.log("Invalid number. Please enter digits only.");
+                continue;
+            }
+            return input;
+        }
     }
 }
 exports.AddressBook = AddressBook;
