@@ -1,6 +1,5 @@
 import * as readline from "readline-sync";
 import { AddressBook } from './model/AddressBook';
-import { ContactPerson } from './model/ContactPerson';
 
 class AddressBookMain {
   private addressBook = new AddressBook();
@@ -15,12 +14,16 @@ class AddressBookMain {
     while (true) {
       console.log("\n--- MENU ---");
       console.log("1. Add Contact");
-      console.log("2. View Contacts");
-      console.log("3. Edit Contact by First Name");
-      console.log("4. Delete Contact by First Name");
-      console.log("5. Exit");
+      console.log("2. View All Contacts");
+      console.log("3. Edit Contact");
+      console.log("4. Delete Contact");
+      console.log("5. Add Multiple Contacts");
+      console.log("6. Search by City/State");
+      console.log("7. View City Dictionary");
+      console.log("8. View State Dictionary");
+      console.log("9. Exit");
 
-      const choice = readline.question("Enter your choice (1-5): ");
+      const choice = readline.question("Enter your choice (1-9): ");
 
       switch (choice) {
         case "1":
@@ -43,15 +46,37 @@ class AddressBookMain {
           break;
 
         case "5":
-          console.log("Exiting program. Goodbye!");
+          this.addressBook.addMultipleContacts();
+          break;
+
+        case "6":
+          const keyword = readline.question("Enter city or state to search: ");
+          const results = this.addressBook.searchByCityOrState(keyword);
+          if (results.length === 0) {
+            console.log(" No matching contacts found.");
+          } else {
+            results.forEach((c, i) => console.log(`${i + 1}. ${c.toString()}`));
+          }
+          break;
+
+        case "7":
+          this.addressBook.viewCityDictionary();
+          break;
+
+        case "8":
+          this.addressBook.viewStateDictionary();
+          break;
+
+        case "9":
+          console.log("Exiting... Goodbye!");
           return;
 
         default:
-          console.log("Invalid choice. Please select between 1 to 5.");
+          console.log("Invalid choice. Enter between 1 to 9.");
       }
     }
   }
 }
 
-const addressApp = new AddressBookMain();
-addressApp.run();
+const app = new AddressBookMain();
+app.run();

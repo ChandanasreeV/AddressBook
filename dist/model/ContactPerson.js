@@ -24,7 +24,7 @@ class ContactPerson {
     validatePhoneNumber(phone) {
         const phoneRegex = /^\+91[6-9]\d{9}$/;
         if (!phoneRegex.test(phone)) {
-            throw new Error("Invalid Phone Number! It must start with +91 and be followed by a valid 10-digit Indian number.");
+            throw new Error("Invalid Phone Number! Must start with +91 and be followed by valid 10 digits.");
         }
     }
     validateEmail(email) {
