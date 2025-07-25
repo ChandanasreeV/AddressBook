@@ -127,16 +127,31 @@ export class AddressBook {
   }
 
   searchByCityOrState(keyword: string): ContactPerson[] {
-    return this.contacts.filter(c =>
+    const results = this.contacts.filter(c =>
       c.city.toLowerCase() === keyword.toLowerCase() ||
       c.state.toLowerCase() === keyword.toLowerCase()
     );
+
+    if (results.length === 0) {
+      console.log(" No matching contacts found.");
+    } else {
+      console.log(`\nFound ${results.length} contact(s) in '${keyword}':`);
+      results.forEach((c, i) => console.log(`${i + 1}. ${c.toString()}`));
+
+      const cityCount = results.filter(c => c.city.toLowerCase() === keyword.toLowerCase()).length;
+      const stateCount = results.filter(c => c.state.toLowerCase() === keyword.toLowerCase()).length;
+
+      console.log(`\nCount by City: ${cityCount}`);
+      console.log(`Count by State: ${stateCount}`);
+    }
+
+    return results;
   }
 
   viewCityDictionary(): void {
     console.log("\n--- City Dictionary ---");
     for (const [city, persons] of this.cityDictionary.entries()) {
-      console.log(`\n${city}:`);
+      console.log(`\n${city} (${persons.length}):`);
       persons.forEach(p => console.log("  - " + p.toString()));
     }
   }
@@ -144,7 +159,7 @@ export class AddressBook {
   viewStateDictionary(): void {
     console.log("\n--- State Dictionary ---");
     for (const [state, persons] of this.stateDictionary.entries()) {
-      console.log(`\n${state}:`);
+      console.log(`\n${state} (${persons.length}):`);
       persons.forEach(p => console.log("  - " + p.toString()));
     }
   }

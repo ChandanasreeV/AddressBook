@@ -51,12 +51,7 @@ class AddressBookMain {
 
         case "6":
           const keyword = readline.question("Enter city or state to search: ");
-          const results = this.addressBook.searchByCityOrState(keyword);
-          if (results.length === 0) {
-            console.log(" No matching contacts found.");
-          } else {
-            results.forEach((c, i) => console.log(`${i + 1}. ${c.toString()}`));
-          }
+          this.addressBook.searchByCityOrState(keyword);
           break;
 
         case "7":
